@@ -1,25 +1,18 @@
 #cloud-config
 version: 1
 package_update: true
+hostname: ${hostname}
+manage_etc_hosts: true
+manage_resolv_conf: true
+resolv_conf:
+  nameservers:
+    - 8.8.8.8
+    - 8.8.4.4
 packages:
   - git
   - python-is-python3
   - python3-gnupg
 write_files:
-# Salt minion config files
-  - path: /etc/salt/minion.d/99-master-address.conf
-    permissions: '0644'
-    content: |
-      master: ${saltmaster}
-  - path: /etc/salt/minion.d/minion_id.conf
-    permissions: '0644'
-    content: |
-      id: ${minion_id}
-  - path: /etc/salt/minion.d/x509.conf
-    permissions: '0644'
-    content: |
-      features:
-        x509_v2: true
 # Salt Bootstrap script
   - path: /tmp/gmits/salt_init.sh
     permissions: '0500'
@@ -36,5 +29,21 @@ write_files:
       echo "deb [signed-by=$KEYRING_DIR/salt-archive-keyring-2023.gpg arch=amd64] $SALT_REPO_URL jammy main" | tee /etc/apt/sources.list.d/salt.list
 
       apt-get update && apt-get install -qq salt-minion -y
+# Salt minion config files
+  - path: /etc/salt/minion.d/99-master-address.conf
+    permissions: '0644'
+    content: |
+      master: ${saltmaster}
+  - path: /etc/salt/minion.d/minion_id.conf
+    permissions: '0644'
+    content: |
+      id: ${minion_id}
+  - path: /etc/salt/minion.d/x509.conf
+    permissions: '0644'
+    content: |
+      features:
+        x509_v2: true
+
 runcmd:
   - sudo ./tmp/gmits/salt_init.sh
+  - sudo hostnamectl set-hostname ${hostname} 

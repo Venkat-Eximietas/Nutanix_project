@@ -1,49 +1,35 @@
 variable "nutanix_password" {
   description = "nutanix cred"
-  default = ""
+  default     = "nx2Tech291!"
 }
 
 variable "nutanix_username" {
-    default = ""
+  default = "admin"
 }
 
 variable "cluster_uuid" {
-  default = "0006209b-120f-9908-171b-ac1f6b3bbac3"
+  default = "00062139-bb4d-225a-0000-00000002ad3c"
 }
 
 variable "subnet_uuid" {
-  default = "654ad876-7d63-4fc5-8bec-1d833f45d816"
+  default = "cf2006f1-9acf-47a9-b8fa-18d87e72af5d"
 }
 
 variable "disk_image_uuid" {
-  default = "da280f76-bea5-4ed6-aa53-7cdbb707ae2b"
+  default = "4fe6a7d3-35ee-4158-932a-070dadd7bc78"
 }
 
 
 variable "project" {
   description = "The GCP project ID for the resources."
   type        = string
-  default = "birdbath"
+  default     = "birdbath"
 }
 
 variable "env" {
   description = "The environment (e.g., dev, staging, prod)."
   type        = string
-  default   = "test"
-}
-
-variable "userdata_file" {
-  default = "scripts/userdata.yaml.tftpl"
-}
-/*
-variable "metadata_file" {
-  default = "scripts/metadata.yaml.tftpl"
+  default     = "test"
 }
 
 
-variable "cloudinit_file" {
-  description = "The path to the Cloud-Init configuration file."
-  type        = string
-  default     = "saltminioninit.yaml"
-}
-*/

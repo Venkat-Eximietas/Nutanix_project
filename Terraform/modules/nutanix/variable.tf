@@ -17,17 +17,10 @@ variable "vm_name" {}
 variable "disk_size_mib" {
   default = 40960
 }
-variable "hostname_file"{}
+#variable "hostname_file"{}
 
 variable "cloudinit_file" {
   description = "Path to the Cloud-Init configuration file."
   type        = string
 }
 
-variable "userdata_file" {}
-# variable "metadata_file" {}
-/*
-variable "cloudinit_file" {
-  default     = "saltminioninit.yaml"
-}
-*/

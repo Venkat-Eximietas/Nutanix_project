@@ -1,17 +1,15 @@
 locals {
-  pubkey_path     = "../../scripts/pubkey.gpg"
-  trust_path      = "../../scripts/trust.gpg"
   machine_name    = "${var.project}-${var.env}-${var.vm_name}"
-  saltmaster_addr = "${var.project}-${var.env}-cfg-01"
+  saltmaster = "${var.project}-${var.env}-cfg-01"
+  minion_id = "${var.project}-${var.env}-${var.vm_name}"
   is_saltmaster   = can(regex("^.*(-cfg-01)$", var.vm_name))
-  cloudinit_file = "../../scripts/${var.cloudinit_file}"
-  # userdata_path    = "../../scripts/${var.userdata_file}"
-  # metadata_path    = "../../scripts/${var.metadata_file}"
+  #cloudinit_file = "../../scripts/${var.cloudinit_file}"
 
-  cloud_init_user_data = base64encode(templatefile("../../scripts/${var.hostname_file}", {
+  cloud_init_user_data = base64encode(templatefile("${path.module}/../../scripts/${var.cloudinit_file}", {
     hostname = local.machine_name
+    saltmaster = local.saltmaster
+    minion_id = local.minion_id
   }))
-
 }
 
 
@@ -45,6 +43,7 @@ resource "nutanix_virtual_machine" "vm" {
     subnet_uuid = var.subnet_uuid
   }
 
-  guest_customization_cloud_init_user_data = local.cloud_init_user_data
+  guest_customization_cloud_init_user_data = local.cloud_init_user_data 
+
 
 }
