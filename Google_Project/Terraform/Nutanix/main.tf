@@ -1,4 +1,3 @@
-
 module "jmp-01" {
   source = "./modules/nutanix"  
 
