@@ -1,0 +1,159 @@
+#cloud-config
+version: 1
+apt:
+  http_proxy: http://${proxy_server}/
+  ftp_proxy: http://${proxy_server}/
+  https_proxy: http://${proxy_server}/
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+packages:
+  - apt-transport-https
+  - git
+  - openvswitch-switch-dpdk
+  - python-is-python3
+  - python3-gnupg
+write_files:
+  - path: /etc/hosts
+    content: |
+      # Entries below via Terraform
+      ${host_content}
+    append: true
+%{ if is_saltmaster ~}
+# Master config files
+  - path: /etc/salt/master.d/peer.conf
+    permissions: '0600'
+    content: |
+      peer:
+        .*:
+          - x509.sign_remote_certificate
+  - path: /etc/salt/master.d/roots.conf
+    permissions: '0600'
+    content: |
+      file_roots:
+        base:
+          - /srv/salt/
+          - /srv/files/
+      pillar_roots:
+        base:
+          - /srv/pillar/
+  - path: /etc/salt/master.d/peer.conf
+    permissions: '0600'
+    content: |
+      gpg_keydir: /etc/salt/gpgkeys
+  - path: /etc/salt/master.d/peer.conf
+    permissions: '0600'
+    content: |
+      features:
+        x509_v2: true
+  - path: /etc/salt/gpgkeys/pubkey.gpg
+    permissions: '0600'
+    content: |
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+      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
+      =7Ph8
+      -----END PGP PUBLIC KEY BLOCK-----
+  - path: /etc/salt/gpgkeys/trust.gpg
+    permissions: '0600'
+    content: |
+      1DAD8B275907425B25EB2D04ED5B8DC579E7EEA8:6:
+%{ endif ~}
+# Salt minion config files
+  - path: /etc/salt/minion.d/99-master-address.conf
+    permissions: '0644'
+    content: |
+      master: ${saltmaster}
+  - path: /etc/salt/minion.d/minion_id.conf
+    permissions: '0644'
+    content: |
+      id: ${hostname}
+  - path: /etc/salt/minion.d/x509.conf
+    permissions: '0644'
+    content: |
+      features:
+        x509_v2: true
+# Salt Bootstrap script
+  - path: /tmp/gmits/gmits-init.sh
+    permissions: '0511'
+    content: |
+      #!/bin/bash
+
+      export DEBIAN_FRONTEND=noninteractive
+      export NEEDRESTART_SUSPEND=y
+
+      GPGHOME='/etc/salt/gpgkeys'curl 
+      GMITSTMP='/tmp/gmits'
+      SALTBOOTSTRAP='bootstrap-salt.sh'
+      HOSTNAME=$(uname -n)
+
+      # Set system-wide proxy
+      cat <<-EOF >>/etc/environment
+      http_proxy="http://${proxy_server}/"
+      https_proxy="http://${proxy_server}/"
+      ftp_proxy="http://${proxy_server}/"
+      no_proxy="localhost,127.0.0.1"
+      HTTP_PROXY="http://${proxy_server}/"
+      HTTPS_PROXY="http://${proxy_server}/"
+      FTP_PROXY="http://${proxy_server}/"
+      NO_PROXY="localhost,127.0.0.1"
+      EOF
+
+      # Setup Salt repo
+      sudo curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring-2023.gpg https://repo.saltproject.io/salt/py3/ubuntu/22.04/amd64/SALT-PROJECT-GPG-PUBKEY-2023.gpg
+      echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring-2023.gpg arch=amd64] https://repo.saltproject.io/salt/py3/ubuntu/22.04/amd64/3006 jammy main" | sudo tee /etc/apt/sources.list.d/salt.list
+      apt-get update
+
+      if [[ $HOSTNAME =~ (-cfg-01)$ ]]; then
+        echo "Setting up Salt Primary"
+        # setup GPG keys for salt master
+        mkdir -p $GPGHOME && chmod -R 0700 $GPGHOME
+        touch $GPGHOME/privkey.gpg
+        gpg --homedir $GPGHOME --import $GPGHOME/pubkey.gpg
+        gpg --import $GPGHOME/pubkey.gpg
+        gpg --homedir $GPGHOME --import-ownertrust $GPGHOME/trust.gpg
+        sudo apt-get install salt-master salt-minion -y
+        sudo systemctl enable salt-master && sudo systemctl start salt-master
+        chown -R salt $GPGHOME
+      else
+        echo "Install Salt Minion"
+        sudo apt-get install salt-minion -y
+      fi
+      sudo systemctl enable salt-minion && sudo systemctl start salt-minion
+runcmd:
+  - sudo ./tmp/gmits/gmits-init.sh

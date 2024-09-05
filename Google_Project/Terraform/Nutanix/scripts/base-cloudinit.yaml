@@ -1,0 +1,40 @@
+#cloud-config
+version: 1
+package_update: true
+packages:
+  - git
+  - python-is-python3
+  - python3-gnupg
+write_files:
+# Salt minion config files
+  - path: /etc/salt/minion.d/99-master-address.conf
+    permissions: '0644'
+    content: |
+      master: ${saltmaster}
+  - path: /etc/salt/minion.d/minion_id.conf
+    permissions: '0644'
+    content: |
+      id: ${minion_id}
+  - path: /etc/salt/minion.d/x509.conf
+    permissions: '0644'
+    content: |
+      features:
+        x509_v2: true
+# Salt Bootstrap script
+  - path: /tmp/gmits/salt_init.sh
+    permissions: '0500'
+    content: |
+      #!/bin/bash
+      
+      export DEBIAN_FRONTEND=noninteractive
+
+      SALT_GPG_URL='https://repo.saltproject.io/salt/py3/ubuntu/22.04/amd64/SALT-PROJECT-GPG-PUBKEY-2023.gpg'
+      SALT_REPO_URL='https://repo.saltproject.io/salt/py3/ubuntu/22.04/amd64/latest'
+      KEYRING_DIR='/etc/apt/keyrings'
+
+      curl -fsSL -o $KEYRING_DIR/salt-archive-keyring-2023.gpg $SALT_GPG_URL
+      echo "deb [signed-by=$KEYRING_DIR/salt-archive-keyring-2023.gpg arch=amd64] $SALT_REPO_URL jammy main" | tee /etc/apt/sources.list.d/salt.list
+
+      apt-get update && apt-get install -qq salt-minion -y
+runcmd:
+  - sudo ./tmp/gmits/salt_init.sh
