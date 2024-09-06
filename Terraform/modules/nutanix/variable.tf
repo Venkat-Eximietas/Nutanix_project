@@ -23,4 +23,3 @@ variable "cloudinit_file" {
   description = "Path to the Cloud-Init configuration file."
   type        = string
 }
-

@@ -3,14 +3,16 @@ locals {
   saltmaster = "${var.project}-${var.env}-cfg-01"
   minion_id = "${var.project}-${var.env}-${var.vm_name}"
   is_saltmaster   = can(regex("^.*(-cfg-01)$", var.vm_name))
-  #cloudinit_file = "../../scripts/${var.cloudinit_file}"
+
 
   cloud_init_user_data = base64encode(templatefile("${path.module}/../../scripts/${var.cloudinit_file}", {
     hostname = local.machine_name
     saltmaster = local.saltmaster
     minion_id = local.minion_id
   }))
+
 }
+
 
 
 resource "nutanix_virtual_machine" "vm" {

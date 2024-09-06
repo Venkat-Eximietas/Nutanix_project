@@ -97,3 +97,4 @@ module "opensrch-03" {
   disk_image_uuid = var.disk_image_uuid
   cloudinit_file = "base-cloudinit.yaml"
 }
+
