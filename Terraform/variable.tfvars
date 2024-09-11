@@ -1,8 +1,10 @@
 nutanix_password = "nx2Tech278!"
 nutanix_username = "admin"
-cluster_uuid     = "0006209b-120f-9908-171b-ac1f6b3bbac3"
-subnet_uuid      = "654ad876-7d63-4fc5-8bec-1d833f45d816"
-disk_image_uuid  = "da280f76-bea5-4ed6-aa53-7cdbb707ae2b"
+endpoint = "10.42.36.39"
+cluster_uuid     = "00062139-bb4d-225a-0000-00000002ad3c"
+subnet_uuid      = "cf2006f1-9acf-47a9-b8fa-18d87e72af5d"
+disk_image_uuid  = "4fe6a7d3-35ee-4158-932a-070dadd7bc78"
 project          = "birdbath"
 env              = "test"
+
 

@@ -1,34 +1,40 @@
+
 variable "nutanix_password" {
-  description = "nutanix cred"
-  default     = "nx2Tech291!"
+  description = "The password for Nutanix credentials."
+  type        = string
 }
 
 variable "nutanix_username" {
-  default = "admin"
+  description = "The username for Nutanix credentials."
+  type        = string
+}
+
+variable "endpoint" {
+  description = "The Nutanix API endpoint URL."
+  type        = string
 }
 
 variable "cluster_uuid" {
-  default = "00062139-bb4d-225a-0000-00000002ad3c"
+  description = "The UUID of the Nutanix cluster."
+  type        = string
 }
 
 variable "subnet_uuid" {
-  default = "cf2006f1-9acf-47a9-b8fa-18d87e72af5d"
+  description = "The UUID of the Nutanix subnet."
+  type        = string
 }
 
 variable "disk_image_uuid" {
-  default = "4fe6a7d3-35ee-4158-932a-070dadd7bc78"
+  description = "The UUID of the Nutanix disk image."
+  type        = string
 }
 
-
 variable "project" {
-  description = "The GCP project ID for the resources."
+  description = "The Google Cloud project ID for the resources."
   type        = string
-  default     = "birdbath"
 }
 
 variable "env" {
-  description = "The environment (e.g., dev, staging, prod)."
+  description = "The environment for the resources (e.g., dev, test, prod)."
   type        = string
-  default     = "test"
 }
-

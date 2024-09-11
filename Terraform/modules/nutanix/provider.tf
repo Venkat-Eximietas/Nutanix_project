@@ -6,13 +6,3 @@ terraform {
     }
   }
 }
-/*
-provider "nutanix" {
-    username     = var.nutanix_username
-    password     = var.nutanix_password
-    endpoint     = "10.38.203.37"
-    port         = 9440
-    insecure     = true
-    wait_timeout = 10
-}
-*/
